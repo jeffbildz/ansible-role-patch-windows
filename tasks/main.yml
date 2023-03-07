@@ -1,0 +1,23 @@
+---
+- name: update_windows | main.yml | get used space before update
+  win_shell: Get-PSDrive C | Select-Object Used | ConvertTo-Json
+  register: used_space_before_update
+  ignore_errors: yes
+
+- include_tasks: updates-all.yml
+  when:
+    - "'Windows Server 2008' not in ansible_distribution"
+    - "'Windows 7' not in ansible_distribution"
+
+- name: update_windows | main.yml | get used space after update
+  win_shell: Get-PSDrive C | Select-Object Used | ConvertTo-Json
+  register: used_space_after_update
+  ignore_errors: yes
+
+- debug:
+    msg:
+      - "Used space before update: {{ ((used_space_before_update.stdout | from_json)['Used']|int / (1024*1024*1024)) | round(2, 'floor') }} GB"
+      - "Used space after update: {{ ((used_space_after_update.stdout | from_json)['Used']|int / (1024*1024*1024)) | round(2, 'floor') }} GB"
+  when:
+    - used_space_before_update.stdout is defined
+    - used_space_after_update.stdout is defined

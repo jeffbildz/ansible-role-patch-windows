@@ -1,0 +1,29 @@
+---
+galaxy_info:
+  author: Jeff Bilder
+  role_name: patch_windows
+  namespace: CloudBilders 
+  description: Common configurations and software to be applied across all server types.
+  license: Apache-2.0
+  company: Origami Risk
+  min_ansible_version: "2.10"
+  
+  platforms:
+    - name: Windows
+      versions:
+        - all
+
+  cloud_platforms:
+    - amazon
+    - google
+    - azure
+    - azure
+    - vmware
+    - ovirt
+
+  galaxy_tags:
+    - windows
+    - update
+    - template
+
+dependencies: []
